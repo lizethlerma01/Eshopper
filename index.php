@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <?php
-  $BDProductos = array( 
-    array(1, 2, 3, 4, 5),                                       //El ID
-    array("Blusa", "Lentes", "Playera", "Pantalón", "Vestido"), //La Descripción
-    array(100, 350, 200, 420, 250),                             //El Precio
-    array("Dama", "Caballero", "Caballero", "Dama", "Dama"));   //Categoría
-  $iProductos = 5; //Indica el No. de Productos
-
+  $BDProductos = array(0,"CERO",0,"");
+ $i=0; $iProductos=1; 
+ $filas=file('archivo.txt'); 
+ 
+ foreach($filas as $value){
+    list($id, $producto, $precio, $categoria) = explode(",", $value);
+    array_push($BDProductos, $id);
+    array_push($BDProductos, $producto);
+    array_push($BDProductos, $precio);
+    array_push($BDProductos, $categoria);
+    $iProductos++;
+  }
   $BDAlmacen = array( 
     array(1, 2, 3, 4, 5), //El IDProducto
     array(0,10, 5,15, 3)); //Las Existencias
@@ -18,12 +23,13 @@
     array(700, 200)); //El Monto
   $iVentas = 2; //El No. de ventas al momento
 ?>
+
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Software Punto de Venta" content="">
-    <meta name="Karla Lerma" content="">
+    <meta name="Lerma Hernández" content="">
     <title>Inicio | E-Shopper</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -51,7 +57,7 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +52 618 1200 776</a></li>
+								<li><a href="#"><i class="fa fa-phone"></i> +52 618-428-5785</a></li>
 								<li><a href="#"><i class="fa fa-envelope"></i> atencionclientes@gmail.com</a></li>
 							</ul>
 						</div>
@@ -71,9 +77,12 @@
 							<a href="index.php"><img src="images/home/logo.png" alt="" /></a>
 						</div>						
 					</div>
+					<H3>SOFTWARE PUNTO DE VENTA<H3>
 					<div class="col-sm-8">
+						POR:LIZETH LERMA
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
+								<li><a href="agregarproductos.php"target="_blank"><i class="fa fa-plus"></i>Agregar</a></li>
 								<li><a href="checkout.php"><i class="fa fa-crosshairs"></i> Pagar</a></li>
 								<li><a href="cart.php"><i class="fa fa-shopping-cart"></i> Carrito</a></li>
 								<li><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
@@ -166,7 +175,11 @@
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Categoría 1</a></h4>
+									<h4 class="panel-title"><a href="#">Damas</a></h4>
+<h4 class="panel-title"><a href="#">Caballeros</a></h4>
+	<h4 class="panel-title"><a href="#">Niños</a></h4>
+
+									
 								</div>
 							</div>
 						</div><!--/category-products-->
@@ -182,36 +195,39 @@
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Catálogo de Productos</h2>
 						<?php
-   for ($i=0; $i< $iProductos;$i++){      
+						$n=4;
+   for ($i=1; $i< $iProductos;$i++){      
 ?>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
 								<div class="single-products">
 										<div class="productinfo text-center">
 											<?php
-											$img=$BDProductos[0][$i];
-											?>
-											<img src="images/home/<?php echo $img;
-										?>.jpg" alt="" whith="210" height="180"/>
-											<h2>
-												<?php echo "$" . $BDProductos [2][$i];
-											?>	
-											</h2>
-											<p><?php echo "$" . $BDProductos [1][$i];
-											?>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Agregar al Carrito</a>
-										</div>
+$img = $BDProductos [$n];
+?>
+<img src="images/home/<?php echo $img;?>.jpg" width="210" height="180"alt="" />
+<h2>
+<?php echo $BDProductos [$n+2];?>
+</h2>
+<p> 
+<?php echo $BDProductos [$n+1];?>
+</p>
+	<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Agregar al Carrito</a>							</div>
 										<div class="product-overlay">
 											<div class="overlay-content">
-												<h2><?php echo "$ " . $BDProductos[1][$i];?><h2>
-													<p><?php echo "$ " . $BDProductos[1][$i];?></p>
+												<h2><?php echo "$".$BDProductos [$n+1];?></h2>
+													<p><?php echo $BDProductos [$n+2];?></p>
 												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Agregar al Carrito</a>
 											</div>
 										</div>
 								</div>								
 							</div>
 						</div>
-						<?php } ?>
+						<?php
+						$n+=4;
+						 } 
+						 ?>
+						
 					</div><!--features_items-->
 					
 					
@@ -226,9 +242,9 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="images/home/vanz.jpg" alt="" />
-													<h2>$65</h2>
-													<p>Producto Vanz</p>
+													<img src="images/home/Mochila.jpg" alt="" />
+													<h2>$80</h2>
+													<p>Producto Mochila</p>
 													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Agregar al Carrito</a>
 												</div>
 												
@@ -239,16 +255,15 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="images/home/Sudadera.jpg" alt="" />
-													<h2>$50</h2>
-													<p>Producto Sudadera </p>
+													<img src="images/home/Vans.jpg" alt="" />
+													<h2>$85</h2>
+													<p>Producto Vans</p>
 													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Agregar al Carrito</a>
 												</div>
 												
 											</div>
 										</div>
-									</div>																						
-
+									</div>
 								</div>
 								
 							</div>
